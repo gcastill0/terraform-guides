@@ -2,6 +2,13 @@ terraform {
   required_version = ">= 0.11.11"
 }
 
+data "terraform_remote_state" "k8s_cluster" {
+  backend = "atlas"
+  config = {
+    name = "${var.tfe_organization}/${var.k8s_cluster_workspace}"
+  }
+}
+
 resource "vault_auth_backend" "k8s" {
   type = "kubernetes"
   path = "${data.terraform_remote_state.outputs.vault_user}-${data.terraform_remote_state.outputs.environment}"
@@ -10,13 +17,6 @@ resource "vault_auth_backend" "k8s" {
 
 provider "vault" {
   address = "${data.terraform_remote_state.outputs.vault_addr}"
-}
-
-data "terraform_remote_state" "k8s_cluster" {
-  backend = "atlas"
-  config = {
-    name = "${var.tfe_organization}/${var.k8s_cluster_workspace}"
-  }
 }
 
 provider "kubernetes" {
