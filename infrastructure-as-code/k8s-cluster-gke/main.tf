@@ -27,6 +27,11 @@ resource "google_container_cluster" "k8sexample" {
   master_auth {
     username = "${var.master_username}"
     password = "${var.master_password}"
+ 
+    client_certificate_config {
+      issue_client_certificate = true
+    }
+ 
   }
 
   node_config {
