@@ -16,7 +16,7 @@ resource "vault_auth_backend" "k8s" {
 }
 
 provider "vault" {
-  address = "${data.terraform_remote_state.outputs.vault_addr}"
+  address = "${data.terraform_remote_state.k8s_cluster.outputs.vault_addr}"
 }
 
 provider "kubernetes" {
